@@ -12,5 +12,11 @@ if (!is_dir($storagePath)) {
     mkdir($storagePath . '/logs', 0777, true);
 }
 
-// Forward Vercel requests to normal index.php
-require __DIR__ . '/../public/index.php';
+try {
+    require __DIR__ . '/../public/index.php';
+} catch (\Throwable $e) {
+    http_response_code(500);
+    echo "<h1>Fatal Error in Vercel Deployment</h1>";
+    echo "<pre>" . $e->getMessage() . "</pre>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+}
