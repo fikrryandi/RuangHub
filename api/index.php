@@ -1,34 +1,49 @@
 <?php
 
-// Ensure storage directories exist in /tmp for Vercel
-$storagePath = '/tmp/storage';
-if (!is_dir($storagePath)) {
-    mkdir($storagePath, 0777, true);
-    mkdir($storagePath . '/app/public', 0777, true);
-    mkdir($storagePath . '/framework/cache/data', 0777, true);
-    mkdir($storagePath . '/framework/sessions', 0777, true);
-    mkdir($storagePath . '/framework/testing', 0777, true);
-    mkdir($storagePath . '/framework/views', 0777, true);
-    mkdir($storagePath . '/logs', 0777, true);
+// ═══════════════════════════════════════════════════
+// VERCEL BOOTSTRAP - Setup writable paths in /tmp
+// ═══════════════════════════════════════════════════
+
+$appPath = dirname(__DIR__);
+
+// 1. Create storage directories
+$dirs = [
+    '/tmp/storage/app/public',
+    '/tmp/storage/framework/cache/data',
+    '/tmp/storage/framework/sessions',
+    '/tmp/storage/framework/testing',
+    '/tmp/storage/framework/views',
+    '/tmp/storage/logs',
+    '/tmp/bootstrap/cache',
+];
+foreach ($dirs as $dir) {
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
+    }
 }
 
-// Create views compiled path
-if (!is_dir('/tmp/views')) {
-    mkdir('/tmp/views', 0777, true);
+// 2. Copy bootstrap/cache PHP files so service providers are discovered
+$sourceCache = $appPath . '/bootstrap/cache';
+if (is_dir($sourceCache)) {
+    foreach (glob($sourceCache . '/*.php') as $file) {
+        $dest = '/tmp/bootstrap/cache/' . basename($file);
+        if (!file_exists($dest)) {
+            copy($file, $dest);
+        }
+    }
 }
 
-// Copy SQLite database to /tmp if not exists (it needs to be writable)
-$dbSource = __DIR__ . '/../database/database.sqlite';
+// 3. Copy SQLite database to /tmp (must be writable)
+$dbSource = $appPath . '/database/database.sqlite';
 $dbDest = '/tmp/database.sqlite';
 if (!file_exists($dbDest) && file_exists($dbSource)) {
     copy($dbSource, $dbDest);
 }
 
+// 4. Run the app
 try {
-    require __DIR__ . '/../public/index.php';
+    require $appPath . '/public/index.php';
 } catch (\Throwable $e) {
     http_response_code(500);
-    echo "<h1>Fatal Error in Vercel Deployment</h1>";
-    echo "<pre>" . $e->getMessage() . "</pre>";
-    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+    echo "<h2>Vercel Error</h2><pre>" . $e->getMessage() . "\n\n" . $e->getTraceAsString() . "</pre>";
 }
