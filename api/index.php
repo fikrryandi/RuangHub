@@ -12,6 +12,18 @@ if (!is_dir($storagePath)) {
     mkdir($storagePath . '/logs', 0777, true);
 }
 
+// Create views compiled path
+if (!is_dir('/tmp/views')) {
+    mkdir('/tmp/views', 0777, true);
+}
+
+// Copy SQLite database to /tmp if not exists (it needs to be writable)
+$dbSource = __DIR__ . '/../database/database.sqlite';
+$dbDest = '/tmp/database.sqlite';
+if (!file_exists($dbDest) && file_exists($dbSource)) {
+    copy($dbSource, $dbDest);
+}
+
 try {
     require __DIR__ . '/../public/index.php';
 } catch (\Throwable $e) {
