@@ -1,18 +1,45 @@
 {
-    "$schema": "https://openapi.vercel.sh/vercel.json",
-    "services": {
-        "app": {
-            "root": ".",
-            "entrypoint": "Dockerfile.vercel",
-            "runtime": "container"
-        }
-    },
-    "rewrites": [
+    "version": 2,
+    "builds": [
         {
-            "source": "/(.*)",
-            "destination": {
-                "service": "app"
-            }
+            "src": "api/index.php",
+            "use": "vercel-php@0.6.1"
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
         }
-    ]
+    ],
+    "routes": [
+        {
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
+        },
+        {
+            "src": "/images/(.*)",
+            "dest": "/public/images/$1"
+        },
+        {
+            "src": "/favicon.png",
+            "dest": "/public/favicon.png"
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "/public/favicon.ico"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
+        "APP_URL": "https://ruanghub.vercel.app",
+        "CACHE_STORE": "array",
+        "SESSION_DRIVER": "cookie",
+        "QUEUE_CONNECTION": "sync",
+        "VIEW_COMPILED_PATH": "/tmp",
+        "VERCEL": "1"
+    }
 }
