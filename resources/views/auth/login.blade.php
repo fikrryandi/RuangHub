@@ -25,8 +25,13 @@
         .page-wrap{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
         .main-cont{width:100%;max-width:1160px;display:flex;align-items:center;gap:36px}
 
+        /* ── ANIMATIONS ── */
+        @keyframes fadeInUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+        @keyframes fadeInLeft{0%{opacity:0;transform:translateX(-40px)}100%{opacity:1;transform:translateX(0)}}
+        @keyframes fadeInRight{0%{opacity:0;transform:translateX(40px)}100%{opacity:1;transform:translateX(0)}}
+
         /* ── LEFT ── */
-        .left-panel{flex:1;display:flex;flex-direction:column;color:white;padding-right:16px}
+        .left-panel{flex:1;display:flex;flex-direction:column;color:white;padding-right:16px;animation:fadeInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) forwards}
         .brand-row{display:flex;align-items:center;gap:14px;margin-bottom:24px}
         .brand-row img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))}
         .brand-row .bt h1{font-size:30px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
@@ -54,7 +59,7 @@
         .feat-item span{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.9);text-align:center;line-height:1.3}
 
         /* ── FORM CARD ── */
-        .form-card{background:#fff;border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,.24),0 8px 24px rgba(0,0,0,.1);padding:38px 36px 28px;width:100%;max-width:396px;flex-shrink:0}
+        .form-card{background:#fff;border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,.24),0 8px 24px rgba(0,0,0,.1);padding:38px 36px 28px;width:100%;max-width:396px;flex-shrink:0;animation:fadeInRight 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;opacity:0;animation-delay:0.2s}
         .card-brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
         .card-brand img{width:34px;height:34px;object-fit:contain}
         .cb-name{font-size:19px;font-weight:800;color:#1565C0;line-height:1}

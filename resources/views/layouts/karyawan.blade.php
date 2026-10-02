@@ -14,6 +14,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- AlpineJS for interaction -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* Global Aesthetic Update for Boxes/Cards */
+        main .bg-white, .modal-content, [x-show*="Modal"] > div > div {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.97) 0%, rgba(224, 240, 255, 0.75) 100%) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.7) !important;
+            box-shadow: 0 10px 40px rgba(21, 101, 192, 0.06) !important;
+        }
+        /* Keep headers in modals solid if they have blue gradients */
+        main .bg-white .bg-gradient-to-r {
+            border: none !important;
+        }
+    </style>
 </head>
 <body class="bg-[#F0F5FB] font-['Plus_Jakarta_Sans'] antialiased text-gray-800">
     <div class="flex h-screen overflow-hidden" x-data="{
