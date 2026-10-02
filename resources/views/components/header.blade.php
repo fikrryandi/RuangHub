@@ -132,6 +132,12 @@
                 </div>
                 </div>
 
+                <!-- Dark Mode Toggle -->
+                <button @click="darkMode = !darkMode" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors p-2 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-center">
+                    <i class="fa-solid fa-moon text-lg" x-show="!darkMode"></i>
+                    <i class="fa-solid fa-sun text-lg text-yellow-400" x-show="darkMode" style="display: none;"></i>
+                </button>
+
                 <!-- User Profile -->
                 @php
                     $authUser  = auth()->user();

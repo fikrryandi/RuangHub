@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" :class="{ 'dark': darkMode }" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,18 +14,62 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Global Aesthetic Update for Boxes/Cards */
-        main .bg-white, .modal-content, [x-show*="Modal"] > div > div {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.97) 0%, rgba(224, 240, 255, 0.75) 100%) !important;
+        /* Transitions */
+        html, body, .bg-white, .bg-\[\#F0F5FB\] {
+            transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* Light Mode Boxes - Aesthetic Glow */
+        main .bg-white, header.bg-white, aside, .modal-content, [x-show*="Modal"] > div > div {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 247, 255, 0.7) 100%) !important;
             backdrop-filter: blur(20px) !important;
             -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.7) !important;
-            box-shadow: 0 10px 40px rgba(21, 101, 192, 0.06) !important;
+            border: 1px solid rgba(255, 255, 255, 0.9) !important;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.15) !important; /* Glow Effect */
         }
+
+        /* Dark Mode Overrides */
+        .dark body, .dark .bg-\[\#F0F5FB\] {
+            background-color: #0f172a !important; /* Very Dark Slate */
+        }
+        
+        .dark main .bg-white, .dark header.bg-white, .dark aside, .dark .modal-content, .dark [x-show*="Modal"] > div > div {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
+            border: 1px solid rgba(56, 189, 248, 0.25) !important;
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.15), inset 0 0 15px rgba(56, 189, 248, 0.05) !important; /* Dark Glow */
+        }
+        
+        .dark .text-gray-800, .dark .text-gray-700, .dark .text-gray-600 {
+            color: #e2e8f0 !important;
+        }
+        .dark .text-gray-500, .dark .text-gray-400 {
+            color: #94a3b8 !important;
+        }
+        .dark .bg-gray-50, .dark .bg-gray-100 {
+            background-color: rgba(30, 41, 59, 0.6) !important;
+        }
+        .dark .border-gray-100, .dark .border-gray-200 {
+            border-color: rgba(51, 65, 85, 0.8) !important;
+        }
+        .dark input, .dark select, .dark textarea {
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            color: #e2e8f0 !important;
+            border-color: rgba(56, 189, 248, 0.3) !important;
+        }
+        .dark th {
+            background-color: rgba(30, 41, 59, 0.9) !important;
+            color: #e2e8f0 !important;
+            border-color: rgba(51, 65, 85, 0.8) !important;
+        }
+
         /* Keep headers in modals solid if they have blue gradients */
-        main .bg-white .bg-gradient-to-r {
+        main .bg-white .bg-gradient-to-r, .dark main .bg-white .bg-gradient-to-r {
             border: none !important;
         }
+        
+        /* Decorative SVG fix in dark mode */
+        .dark svg path[fill="#CBE0FF"] { fill: #1e293b !important; }
+        .dark svg path[fill="#DCEBFF"] { fill: #0f172a !important; }
     </style>
 </head>
 <body class="bg-[#F0F5FB] font-['Plus_Jakarta_Sans'] antialiased text-gray-800">
