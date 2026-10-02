@@ -78,10 +78,12 @@
                     </div>
                     <h2 class="font-bold text-gray-800 text-lg">Statistik Booking Ruangan</h2>
                 </div>
-                <select class="border-gray-200 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 py-2">
-                    <option>7 Hari Terakhir</option>
-                    <option>Bulan Ini</option>
-                </select>
+                <form action="{{ route('admin.dashboard') }}" method="GET">
+                    <select name="filter" onchange="this.form.submit()" class="border-gray-200 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 py-2">
+                        <option value="7_hari" {{ request('filter') == '7_hari' ? 'selected' : '' }}>7 Hari Terakhir</option>
+                        <option value="bulan_ini" {{ request('filter') == 'bulan_ini' ? 'selected' : '' }}>Bulan Ini</option>
+                    </select>
+                </form>
             </div>
             <div class="relative h-64 w-full">
                 <canvas id="bookingChart"></canvas>

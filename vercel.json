@@ -2,41 +2,21 @@
     "version": 2,
     "builds": [
         {
-            "src": "public/build/assets/**",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "public/images/**",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "public/favicon.png",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "public/favicon.ico",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "public/robots.txt",
-            "use": "@vercel/static"
-        },
-        {
             "src": "api/index.php",
             "use": "vercel-php@0.9.0",
             "config": {
                 "maxLambdaSize": "15mb"
             }
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
-            "src": "/build/assets/(.*)",
-            "dest": "/public/build/assets/$1"
-        },
-        {
-            "src": "/build/manifest.json",
-            "dest": "/public/build/manifest.json"
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
         },
         {
             "src": "/images/(.*)",
@@ -58,9 +38,8 @@
     "env": {
         "APP_NAME": "RuangHub",
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "APP_KEY": "base64:UTMlc82szVWedyYjRiGhqi6fAWyeEm/pFtqhkmWm68k=",
-        "APP_URL": "https://ruanghub.vercel.app",
         "LOG_CHANNEL": "stderr",
         "DB_CONNECTION": "sqlite",
         "DB_DATABASE": "/tmp/database.sqlite",

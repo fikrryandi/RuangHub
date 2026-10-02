@@ -86,16 +86,43 @@
                     </div>
 
                     <!-- Time Slots for this room -->
-                    @foreach($times as $slot)
-                    <div class="p-1.5 border-r border-gray-100 border-dashed last:border-0 relative min-h-[85px]">
+                    @php $skipSlots = 0; @endphp
+                    @foreach($times as $index => $slot)
+                        @if($skipSlots > 0)
+                            @php $skipSlots--; @endphp
+                            @continue
+                        @endif
+
+                    <div class="p-1.5 border-r border-gray-100 border-dashed last:border-0 relative min-h-[85px]"
                         @php
-                            $b = $bookings->first(function ($booking) use ($r, $slot) {
+                            $b = $bookings->first(function ($booking) use ($r, $slot, $index) {
                                 if ($booking->room_id != $r->id) return false;
                                 $bStart = \Carbon\Carbon::parse($booking->start_time)->format('H:i');
                                 $bEnd   = \Carbon\Carbon::parse($booking->end_time)->format('H:i');
-                                return ($bStart < $slot['end'] && $bEnd > $slot['start']);
+                                
+                                if ($bStart >= $slot['start'] && $bStart < $slot['end']) return true;
+                                if ($index == 0 && $bStart < $slot['start'] && $bEnd > $slot['start']) return true;
+                                
+                                return false;
                             });
+                            
+                            $span = 1;
+                            if ($b) {
+                                $bEndHour = \Carbon\Carbon::parse($b->end_time)->hour;
+                                $bEndMinute = \Carbon\Carbon::parse($b->end_time)->minute;
+                                
+                                $endSlotHour = $bEndHour + ($bEndMinute > 0 ? 1 : 0);
+                                $slotHour = (int) substr($slot['start'], 0, 2);
+                                $span = max(1, $endSlotHour - $slotHour);
+                                
+                                $remainingSlots = count($times) - $index;
+                                if ($span > $remainingSlots) $span = $remainingSlots;
+                                
+                                $skipSlots = $span - 1;
+                            }
                         @endphp
+                        @if($span > 1) style="grid-column: span {{ $span }};" @endif
+                    >
 
                         @if($b)
                             @php

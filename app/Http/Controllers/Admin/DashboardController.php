@@ -33,14 +33,29 @@ class DashboardController extends Controller
         $chartLineDitolak = [];
         $chartLineDibatalkan = [];
 
-        for ($i = 6; $i >= 0; $i--) {
-            $date = \Carbon\Carbon::today()->subDays($i);
-            $chartLineDates[] = $date->format('d M');
-            
-            $chartLineTotal[] = \App\Models\Booking::whereDate('created_at', $date)->count();
-            $chartLineDisetujui[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'disetujui')->count();
-            $chartLineDitolak[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'ditolak')->count();
-            $chartLineDibatalkan[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'dibatalkan')->count();
+        $filter = request('filter', '7_hari');
+
+        if ($filter == 'bulan_ini') {
+            $daysInMonth = \Carbon\Carbon::now()->daysInMonth;
+            for ($i = $daysInMonth; $i >= 1; $i--) {
+                $date = \Carbon\Carbon::now()->endOfMonth()->subDays($i - 1);
+                $chartLineDates[] = $date->format('d M');
+                
+                $chartLineTotal[] = \App\Models\Booking::whereDate('created_at', $date)->count();
+                $chartLineDisetujui[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'disetujui')->count();
+                $chartLineDitolak[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'ditolak')->count();
+                $chartLineDibatalkan[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'dibatalkan')->count();
+            }
+        } else {
+            for ($i = 6; $i >= 0; $i--) {
+                $date = \Carbon\Carbon::today()->subDays($i);
+                $chartLineDates[] = $date->format('d M');
+                
+                $chartLineTotal[] = \App\Models\Booking::whereDate('created_at', $date)->count();
+                $chartLineDisetujui[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'disetujui')->count();
+                $chartLineDitolak[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'ditolak')->count();
+                $chartLineDibatalkan[] = \App\Models\Booking::whereDate('created_at', $date)->where('status', 'dibatalkan')->count();
+            }
         }
 
         return view('admin.dashboard', compact(
