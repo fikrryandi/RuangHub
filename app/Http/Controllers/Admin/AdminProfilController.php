@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class AdminProfilController extends Controller
@@ -64,11 +63,12 @@ class AdminProfilController extends Controller
         $user = auth()->user();
 
         if ($request->hasFile('photo')) {
-            if ($user->photo) {
-                Storage::disk('public')->delete($user->photo);
-            }
-            $path = $request->file('photo')->store('photos', 'public');
-            $user->update(['photo' => $path]);
+            $file     = $request->file('photo');
+            $mime     = $file->getMimeType();
+            $data     = base64_encode(file_get_contents($file->getRealPath()));
+            $base64   = 'data:' . $mime . ';base64,' . $data;
+
+            $user->update(['photo' => $base64]);
         }
 
         return back()->with('success', 'Foto profil berhasil diperbarui.');

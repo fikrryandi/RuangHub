@@ -138,7 +138,7 @@
                     $authName  = $authUser->name;
                     $authRole  = $authUser->role == 'admin' ? 'Super Admin' : ucfirst($authUser->role);
                     $authImg   = $authUser->photo
-                        ? Storage::url($authUser->photo)
+                        ? $authUser->photo
                         : 'https://ui-avatars.com/api/?name=' . urlencode($authUser->name) . '&background=1D4ED8&color=fff';
                     $profilUrl = $authUser->role == 'admin' ? route('admin.profil.index') : route('karyawan.profil.index');
                 @endphp

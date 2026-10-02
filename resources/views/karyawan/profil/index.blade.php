@@ -61,7 +61,7 @@
                     <div class="relative inline-block mb-4">
                         <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-blue-100 mx-auto shadow-md">
                             @if($user->photo)
-                                <img src="{{ Storage::url($user->photo) }}" alt="Foto" class="w-full h-full object-cover">
+                                <img src="{{ $user->photo }}" alt="Foto" class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-400 text-5xl">
                                     <i class="fa-solid fa-user"></i>
